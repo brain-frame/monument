@@ -76,7 +76,13 @@ target/
 .ipynb_checkpoints/
 
 # exclude data from source control by default
-/data/
+/data/*
+
+# Exclude Notebooks folder
+notebooks/
+
+# Docker image record folder
+.docker_image_record/
 
 # Mac OS-specific storage files
 .DS_Store
