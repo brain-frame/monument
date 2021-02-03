@@ -79,9 +79,6 @@ target/
 # exclude data from source control by default
 /data/*
 
-# Exclude Notebooks folder
-notebooks/
-
 # Docker image record folder
 .docker_image_record/
 
