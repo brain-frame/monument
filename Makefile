@@ -5,7 +5,6 @@
 # GLOBALS                                                                       #
 #################################################################################
 
-PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 BUCKET = [OPTIONAL] your-bucket-for-syncing-data (do not include 's3://')
 PROJECT_NAME = monument
 CONTAINER_NAME = pella
@@ -51,11 +50,11 @@ test_environment: .docker_image_record/$(PROJECT_NAME)
 .PHONY: docker_image run_docker_image python_shell setup_python bash
 
 .docker_image_record:
-	@mkdir .docker_image_record
+	@mkdir -p .docker_image_record
 
 docker_image .docker_image_record/$(PROJECT_NAME): Dockerfile .docker_image_record
 	@echo 'Building Docker Image for $(PROJECT_NAME)'
-	@DOCKER_BUILDKIT=1
+	@set DOCKER_BUILDKIT=1
 	@docker build \
 		-t $(PROJECT_NAME) \
 		.
@@ -95,10 +94,10 @@ bash: .docker_image_record/$(PROJECT_NAME)
 # JUPYTER NOTEBOOK                                                              #
 #################################################################################
 
-.PHONY: notebooks jupyter_notebook find_jupyter_url close_jupyter_notebook
+.PHONY: jupyter_notebook find_jupyter_url close_jupyter_notebook
 
 notebooks:
-	@mkdir notebooks
+	@mkdir -p notebooks
 
 jupyter_notebook: .docker_image_record/$(PROJECT_NAME) notebooks
 	@echo 'Starting Jupyter Notebook server'
@@ -109,11 +108,14 @@ jupyter_notebook: .docker_image_record/$(PROJECT_NAME) notebooks
 		--rm \
 		$(PROJECT_NAME) \
 		jupyter notebook --port $(PORT)
-	@sleep 1
 	@docker exec jupyter_notebook jupyter notebook list
+	@echo 'Replace http://x.x.x.x address with localhost'
+	@echo 'URL should look like localhost:8801/?token={long_token}'
 
 find_jupyter_url:
 	@docker exec jupyter_notebook jupyter notebook list
+	@echo 'Replace http://x.x.x.x address with localhost'
+	@echo 'URL should look like localhost:8801/?token={long_token}'
 
 close_jupyter_notebook:
 	@echo 'Shutting down Jupyter Notebook server'

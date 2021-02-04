@@ -8,6 +8,7 @@ Requirements
 ------------
 - Docker Desktop (https://www.docker.com/products/docker-desktop)
 - git (https://git-scm.com/downloads)
+- make (https://www.gnu.org/software/make/
 
 Steps to get Monument
 ------------
