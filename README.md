@@ -1,7 +1,44 @@
 monument
 ==============================
 
-A template repo for datascience
+A template repo for datascience adapted from Cookiecutter Data Science, but adds a Dockerfile
+to build an environment that is machine agnostic (based on Jupyter-datascience image).
+
+Requirements
+------------
+- Docker Desktop (https://www.docker.com/products/docker-desktop)
+- git (https://git-scm.com/downloads)
+
+Steps to get Monument
+------------
+1. Install prerequisites
+2. Clone this repository with 
+` git clone https://github.com/brain-frame/monument.git `
+
+NOTE: This is a template repo so you also click "Use this template" 
+and create a new repo with the same files as they appear here. Please follow these steps
+https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template
+
+and then clone your new repository
+` git clone https://github.com/{your_github_username}/{your_new_repo_name}.git `
+
+3. Navigate to the folder 
+` cd monument`
+4. Build the Docker image (make sure Docker Desktop at the moment)
+` make docker_image `
+5. Start a Jupyter Notebook
+` make jupyter_notebook
+6. Get the URL for the Notebook
+` make find_jupyter_url `
+7. Navigate to the provided URL using your browser of choice
+8. Do your DS work
+9. Close the server 
+` make close_jupyter_notebook `
+
+
+Sister Git Repositories:
+- <a target="_blank" href="https://github.com/brain-frame/granary">granary</a>: A git template repository with a light-weight Docker image for python
+
 
 Project Organization
 ------------
@@ -28,9 +65,6 @@ Project Organization
     ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
     │   └── figures        <- Generated graphics and figures to be used in reporting
     │
-    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-    │                         generated with `pip freeze > requirements.txt`
-    │
     ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
     ├── src                <- Source code for use in this project.
     │   ├── __init__.py    <- Makes src a Python module
@@ -49,8 +83,12 @@ Project Organization
     │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
     │       └── visualize.py
     │
-    └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
+    └── Dockerfile         <- Script to create Docker image
 
+Name Reference
+------------
+The monument is the first building that is able to be constructed in Sid Meier's Civilization 6.
+It provides +2 Culture per turn.
 
 --------
 
