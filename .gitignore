@@ -1,3 +1,6 @@
+# Files and directories within this file will not be tracked by
+# git unless forced to
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

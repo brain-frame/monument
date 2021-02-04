@@ -1,4 +1,5 @@
-.PHONY: clean data lint sync_data_to_s3 sync_data_from_s3 docker_image run_docker_image
+.PHONY: clean data lint sync_data_to_s3 sync_data_from_s3 \
+	docker_image run_docker_image test_environment
 
 #################################################################################
 # GLOBALS                                                                       #
@@ -39,11 +40,15 @@ sync_data_from_s3:
 test_environment: .docker_image_record/$(PROJECT_NAME)
 	docker run \
 		--name $(CONTAINER_NAME) \
-		-v ${CURDIR}:/monument \
+		-v ${CURDIR}:/$(PROJECT_NAME) \
 		--rm -it $(PROJECT_NAME) \
 		python test_environment.py
 
-## Build and Deploy Docker Image
+
+#################################################################################
+# DOCKER                                                                        #
+#################################################################################
+.PHONY: docker_image run_docker_image python_shell setup_python bash
 
 .docker_image_record:
 	@mkdir .docker_image_record
@@ -60,20 +65,20 @@ docker_image .docker_image_record/$(PROJECT_NAME): Dockerfile .docker_image_reco
 run_docker_image: .docker_image_record/$(PROJECT_NAME)
 	docker run \
 		--name $(CONTAINER_NAME) \
-		-v ${CURDIR}:/monument \
+		-v ${CURDIR}:/$(PROJECT_NAME) \
 		--rm -it $(PROJECT_NAME)
 
 python_shell: .docker_image_record/$(PROJECT_NAME)
 	docker run \
 		--name $(CONTAINER_NAME) \
-		-v ${CURDIR}:/monument \
+		-v ${CURDIR}:/$(PROJECT_NAME) \
 		--rm -it $(PROJECT_NAME) \
 		python
 
 setup_python: setup.py
 	docker run \
 		--name $(CONTAINER_NAME) \
-		-v ${CURDIR}:/monument \
+		-v ${CURDIR}:/$(PROJECT_NAME) \
 		--rm -it $(PROJECT_NAME) \
 		pip install -e .
 
@@ -81,7 +86,7 @@ setup_python: setup.py
 bash: .docker_image_record/$(PROJECT_NAME)
 	docker run \
 		--name $(CONTAINER_NAME) \
-		-v ${CURDIR}:/monument \
+		-v ${CURDIR}:/$(PROJECT_NAME) \
 		--rm -it $(PROJECT_NAME) \
 		bash
 
@@ -89,6 +94,8 @@ bash: .docker_image_record/$(PROJECT_NAME)
 #################################################################################
 # JUPYTER NOTEBOOK                                                              #
 #################################################################################
+
+.PHONY: notebooks jupyter_notebook find_jupyter_url close_jupyter_notebook
 
 notebooks:
 	@mkdir notebooks
@@ -116,6 +123,23 @@ close_jupyter_notebook:
 #################################################################################
 # PROJECT RULES                                                                 #
 #################################################################################
+
+# Add any project rules here
+
+# EXAMPLE PROJECT RULES
+# data/interim/data_required.pq: src/pre_processing.py data/raw/raw_data.csv
+# 	docker run \
+# 		--name $(CONTAINER_NAME) \
+# 		-v ${CURDIR}:/$(PROJECT_NAME) \
+# 		--rm -it $(PROJECT_NAME) \
+# 		python src/pre_processing.py
+
+# data/processed/output.pq: data/interim/data_required.pq src/create_output.py
+# 	docker run \
+# 		--name $(CONTAINER_NAME) \
+# 		-v ${CURDIR}:/$(PROJECT_NAME) \
+# 		--rm -it $(PROJECT_NAME) \
+# 		python src/create_output.py
 
 
 
