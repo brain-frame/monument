@@ -11,5 +11,6 @@ RUN usermod -l alexander jovyan
 
 USER alexander
 
+
 # Move to the working directory of monument
 WORKDIR /monument
