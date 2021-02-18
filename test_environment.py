@@ -4,9 +4,9 @@ REQUIRED_PYTHON = "python3"
 
 
 def main():
-""" This checks python is working on your system. This environment
-    expects Python 3
-"""
+    """ This checks python is working on your system. This environment
+        expects Python 3
+    """
 
     system_major = sys.version_info.major
     if REQUIRED_PYTHON == "python":
